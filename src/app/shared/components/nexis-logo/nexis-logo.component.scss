@@ -1,0 +1,27 @@
+@use '../../../../styles/tokens' as *;
+
+:host {
+  display: inline-block;
+  font-family: $font-display;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+}
+
+:host(.logo--sm) {
+  font-size: 1.05rem;
+}
+
+:host(.logo--lg) {
+  font-size: 1.85rem;
+}
+
+.logo__nexis {
+  color: #ffffff;
+}
+
+.logo__tech {
+  color: $brand-violet;
+}

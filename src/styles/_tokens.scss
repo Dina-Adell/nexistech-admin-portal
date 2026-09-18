@@ -1,0 +1,46 @@
+// -----------------------------------------------------------------------------
+// NexisTech design tokens
+// Single source of truth for colour, type and spacing across the portal.
+// -----------------------------------------------------------------------------
+
+// Brand
+$brand-violet: #7c3aed;
+$brand-violet-strong: #8b5cf6;
+$brand-violet-soft: rgba(124, 58, 237, 0.16);
+$brand-green: #10b981;
+$brand-green-soft: rgba(16, 185, 129, 0.14);
+
+// Surfaces (carbon dark theme)
+$surface-base: #121212;
+$surface-raised: #191919;
+$surface-input: #141414;
+$surface-overlay: rgba(255, 255, 255, 0.04);
+
+// Lines
+$line-hairline: rgba(255, 255, 255, 0.08);
+$line-strong: rgba(255, 255, 255, 0.16);
+
+// Text
+$text-primary: #f4f4f5;
+$text-secondary: #a1a1aa;
+$text-muted: #71717a;
+$text-danger: #f87171;
+
+// Type
+$font-display: 'Sora', 'Segoe UI', system-ui, -apple-system, sans-serif;
+$font-body: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+// Radii
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 18px;
+
+// Motion
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$speed-fast: 140ms;
+$speed-base: 220ms;
+
+// Breakpoints
+$bp-sm: 576px;
+$bp-md: 768px;
+$bp-lg: 992px;

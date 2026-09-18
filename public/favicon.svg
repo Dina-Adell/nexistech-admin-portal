@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NexisTech">
+  <rect width="64" height="64" rx="16" fill="#121212" />
+  <path d="M20 45V19h5.6l13.1 17.3V19H44v26h-5.6L25.3 27.7V45H20Z" fill="#7C3AED" />
+  <circle cx="45.5" cy="21.5" r="3.5" fill="#10B981" />
+</svg>

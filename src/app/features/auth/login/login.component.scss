@@ -1,0 +1,450 @@
+@use '../../../../styles/tokens' as *;
+@use '../../../../styles/mixins' as *;
+
+// -----------------------------------------------------------------------------
+// Page frame
+// -----------------------------------------------------------------------------
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.auth__header {
+  border-bottom: 1px solid $line-hairline;
+}
+
+.auth__header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.15rem 1.25rem;
+}
+
+.auth__support {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  color: $text-secondary;
+}
+
+.auth__support-icon {
+  flex: none;
+  color: $text-muted;
+  transition: color $speed-fast $ease-out;
+}
+
+.auth__support:hover .auth__support-icon {
+  color: $brand-violet-strong;
+}
+
+.auth__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem;
+}
+
+.auth__note {
+  margin: 1.25rem 0 0;
+  font-size: 0.8rem;
+  color: $text-muted;
+  text-align: center;
+}
+
+.auth__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  font-size: 0.78rem;
+  color: $text-muted;
+
+  a {
+    color: $text-muted;
+
+    &:hover {
+      color: $text-secondary;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Sign-in card
+// -----------------------------------------------------------------------------
+
+.signin-card {
+  position: relative;
+  width: 100%;
+  max-width: 424px;
+  padding: 2.25rem 2rem 1.75rem;
+  overflow: hidden;
+  text-align: center;
+  background: linear-gradient(180deg, $surface-raised, #151515);
+  border: 1px solid $line-hairline;
+  border-radius: $radius-lg;
+  box-shadow:
+    0 28px 60px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: card-enter 460ms $ease-out both;
+
+  // A single violet filament along the top edge: the card's one bold move.
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 12%;
+    left: 12%;
+    height: 1px;
+    content: '';
+    background: linear-gradient(
+      90deg,
+      transparent,
+      $brand-violet-strong,
+      transparent
+    );
+  }
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.signin-card__title {
+  margin: 1.35rem 0 0.4rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.signin-card__subtitle {
+  max-width: 30ch;
+  margin: 0 auto;
+  font-size: 0.89rem;
+  color: $text-secondary;
+}
+
+.signin-card__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 1.1rem;
+  margin-top: 1.5rem;
+  font-size: 0.79rem;
+  color: $text-muted;
+  border-top: 1px solid $line-hairline;
+}
+
+.signin-card__status-dot {
+  width: 7px;
+  height: 7px;
+  background: $brand-green;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+}
+
+.signin-card__status-link {
+  color: $brand-green;
+
+  &:hover {
+    color: #34d399;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Form
+// -----------------------------------------------------------------------------
+
+.form {
+  margin-top: 1.75rem;
+  text-align: left;
+}
+
+.field + .field {
+  margin-top: 1rem;
+}
+
+.field__control {
+  position: relative;
+}
+
+.form-label {
+  margin-bottom: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: $text-secondary;
+}
+
+.form-control {
+  height: 47px;
+  padding: 0 0.9rem;
+  font-size: 0.94rem;
+  color: $text-primary;
+  background-color: $surface-input;
+  border: 1px solid $line-strong;
+  border-radius: $radius-md;
+  transition:
+    border-color $speed-base $ease-out,
+    box-shadow $speed-base $ease-out,
+    background-color $speed-base $ease-out;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+
+  &:focus {
+    color: $text-primary;
+    background-color: $surface-input;
+    border-color: $brand-green;
+    box-shadow: 0 0 0 3px $brand-green-soft;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: rgba(248, 113, 113, 0.55);
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.16);
+    }
+  }
+}
+
+.form-control--with-action {
+  padding-right: 3rem;
+}
+
+.field__action {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: $text-muted;
+  background: transparent;
+  border: 0;
+  border-radius: $radius-sm;
+  transform: translateY(-50%);
+  transition:
+    color $speed-fast $ease-out,
+    background-color $speed-fast $ease-out;
+
+  &:hover {
+    color: $text-primary;
+    background-color: $surface-overlay;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.field__error {
+  margin: 0.4rem 0 0;
+  font-size: 0.79rem;
+  color: $text-danger;
+}
+
+.form__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.1rem;
+  font-size: 0.85rem;
+}
+
+.remember {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  padding-left: 0;
+  margin-bottom: 0;
+  cursor: pointer;
+
+  .form-check-input {
+    float: none;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    background-color: transparent;
+    border: 1px solid $line-strong;
+    border-radius: 5px;
+    cursor: pointer;
+    transition:
+      background-color $speed-fast $ease-out,
+      border-color $speed-fast $ease-out;
+
+    &:checked {
+      background-color: $brand-violet;
+      border-color: $brand-violet;
+    }
+
+    &:focus {
+      border-color: $brand-green;
+      box-shadow: 0 0 0 3px $brand-green-soft;
+    }
+  }
+
+  .form-check-label {
+    color: $text-secondary;
+    cursor: pointer;
+  }
+
+  &:hover .form-check-label {
+    color: $text-primary;
+  }
+}
+
+.form__link {
+  color: $brand-violet-strong;
+  font-weight: 500;
+
+  &:hover {
+    color: #a78bfa;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Feedback + submit
+// -----------------------------------------------------------------------------
+
+.alert-line {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.65rem 0.75rem;
+  margin: 1.1rem 0 0;
+  font-size: 0.82rem;
+  border-radius: $radius-md;
+
+  svg {
+    flex: none;
+    margin-top: 0.15rem;
+  }
+}
+
+.alert-line--error {
+  color: $text-danger;
+  background-color: rgba(248, 113, 113, 0.09);
+  border: 1px solid rgba(248, 113, 113, 0.22);
+}
+
+.alert-line--success {
+  color: $brand-green;
+  background-color: $brand-green-soft;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.btn-signin {
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  margin-top: 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(180deg, $brand-violet-strong, $brand-violet);
+  border: 0;
+  border-radius: $radius-md;
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.26);
+  transition:
+    transform $speed-fast $ease-out,
+    box-shadow $speed-base $ease-out,
+    background $speed-base $ease-out,
+    opacity $speed-base $ease-out;
+
+  &:hover:not(:disabled) {
+    color: #ffffff;
+    box-shadow: 0 14px 30px rgba(124, 58, 237, 0.36);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+    box-shadow: 0 10px 24px rgba(124, 58, 237, 0.26);
+  }
+
+  &:disabled {
+    opacity: 0.85;
+  }
+}
+
+.btn-signin--done {
+  background: linear-gradient(180deg, #14cc92, $brand-green);
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.28);
+  opacity: 1;
+}
+
+.btn-signin__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Small screens
+// -----------------------------------------------------------------------------
+
+@include down($bp-sm) {
+  .auth__header-inner {
+    padding: 1rem;
+  }
+
+  .auth__main {
+    padding: 1.75rem 1rem 1rem;
+  }
+
+  .signin-card {
+    padding: 1.75rem 1.25rem 1.4rem;
+    border-radius: $radius-md;
+  }
+
+  .signin-card__title {
+    font-size: 1.24rem;
+  }
+
+  .auth__footer {
+    gap: 1rem;
+  }
+}
