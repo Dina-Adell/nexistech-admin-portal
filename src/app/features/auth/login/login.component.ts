@@ -12,6 +12,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { timer } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { NexisLogoComponent } from '../../../shared/components/nexis-logo/nexis-logo.component';
@@ -44,6 +45,8 @@ export class LoginComponent {
   readonly status = signal<FormStatus>('idle');
   readonly errorMessage = signal<string | null>(null);
   readonly passwordVisible = signal(false);
+  /** True once the success state has held long enough to hand off to the dashboard. */
+  readonly isLeaving = signal(false);
 
   readonly isSubmitting = computed(() => this.status() === 'submitting');
   readonly isSuccessful = computed(() => this.status() === 'success');
@@ -95,8 +98,21 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.status.set('success');
-          // Hand over to the dashboard shell here, e.g.
-          // this.router.navigateByUrl('/overview');
+
+          // Hold the confirmed state briefly, then play the forward hand-off
+          // transition before moving on to the dashboard.
+          timer(700)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => {
+              this.isLeaving.set(true);
+
+              timer(480)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe(() => {
+                  // Navigate once the dashboard route exists, e.g.
+                  // this.router.navigateByUrl('/overview');
+                });
+            });
         },
         error: (error: unknown) => {
           this.status.set('error');

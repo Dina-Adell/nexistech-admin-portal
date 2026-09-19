@@ -10,6 +10,26 @@
   flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
+  transition:
+    opacity 480ms $ease-out,
+    transform 480ms $ease-out,
+    filter 480ms $ease-out;
+}
+
+// Plays once, right after a successful sign-in: the whole screen eases
+// forward and fades, standing in for the hand-off to the dashboard.
+.auth--leaving {
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(3px);
+  transform: scale(1.06) translateY(-14px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth--leaving {
+    filter: none;
+    transform: none;
+  }
 }
 
 .auth__header {
@@ -97,6 +117,11 @@
     0 28px 60px rgba(0, 0, 0, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
   animation: card-enter 460ms $ease-out both;
+  // Only the entrance uses `animation`; hover below runs on `transition` so
+  // the two never fight over the `transform` property.
+  transition:
+    transform 340ms $ease-out,
+    box-shadow 340ms $ease-out;
 
   // A single violet filament along the top edge: the card's one bold move.
   &::before {
@@ -115,6 +140,29 @@
   }
 }
 
+// Restricted to real pointers so a tap on mobile never leaves the card
+// stuck in its "hovered" position.
+@media (hover: hover) and (pointer: fine) {
+  .signin-card:hover {
+    transform: translateY(-5px) scale(1.008);
+    box-shadow:
+      0 36px 74px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+@keyframes checkbox-pop {
+  0% {
+    transform: scale(0.7);
+  }
+  55% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 @keyframes card-enter {
   from {
     opacity: 0;
@@ -124,6 +172,63 @@
     opacity: 1;
     transform: none;
   }
+}
+
+// Staggered entrance: the card lands first, then its contents follow in reading
+// order. Delays stay under half a second so the form is usable immediately.
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.signin-card app-nexis-logo,
+.signin-card__title,
+.signin-card__subtitle,
+.field,
+.form__row,
+.btn-signin,
+.signin-card__status {
+  // `backwards` (not `both`) so the finished animation stops holding
+  // `transform`, leaving hover and active states free to move the element.
+  animation: rise-in 420ms $ease-out backwards;
+}
+
+.signin-card app-nexis-logo {
+  animation-delay: 120ms;
+}
+
+.signin-card__title {
+  animation-delay: 180ms;
+}
+
+.signin-card__subtitle {
+  animation-delay: 230ms;
+}
+
+.field:first-of-type {
+  animation-delay: 290ms;
+}
+
+.field:nth-of-type(2) {
+  animation-delay: 340ms;
+}
+
+.form__row {
+  animation-delay: 390ms;
+}
+
+.btn-signin {
+  animation-delay: 440ms;
+}
+
+.signin-card__status {
+  animation-delay: 520ms;
 }
 
 .signin-card__title {
@@ -159,6 +264,18 @@
   background: $brand-green;
   border-radius: 50%;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+  animation: dot-pulse 2.8s ease-in-out infinite;
+}
+
+// A slow heartbeat on the health dot - the only looping motion on the page.
+@keyframes dot-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0.03);
+  }
 }
 
 .signin-card__status-link {
@@ -266,6 +383,7 @@
   margin: 0.4rem 0 0;
   font-size: 0.79rem;
   color: $text-danger;
+  animation: rise-in 220ms $ease-out backwards;
 }
 
 .form__row {
@@ -302,6 +420,9 @@
     &:checked {
       background-color: $brand-violet;
       border-color: $brand-violet;
+      // Re-fires automatically each time the box changes to :checked -
+      // no JS needed, and unchecking stays silent so it doesn't feel busy.
+      animation: checkbox-pop 320ms $ease-out;
     }
 
     &:focus {
@@ -352,15 +473,60 @@
   color: $text-danger;
   background-color: rgba(248, 113, 113, 0.09);
   border: 1px solid rgba(248, 113, 113, 0.22);
+  // A short shake: enough to notice a rejected attempt, not enough to nag.
+  animation: alert-shake 420ms $ease-out backwards;
+}
+
+@keyframes alert-shake {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  25% {
+    opacity: 1;
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .alert-line--success {
   color: $brand-green;
   background-color: $brand-green-soft;
   border: 1px solid rgba(16, 185, 129, 0.28);
+  animation: rise-in 320ms $ease-out backwards;
+
+  svg {
+    animation: check-pop 420ms $ease-out backwards;
+    animation-delay: 90ms;
+  }
+}
+
+@keyframes check-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .btn-signin {
+  position: relative;
   display: inline-flex;
   gap: 0.55rem;
   align-items: center;
@@ -368,6 +534,7 @@
   width: 100%;
   height: 48px;
   margin-top: 1.25rem;
+  overflow: hidden;
   font-size: 0.95rem;
   font-weight: 600;
   color: #ffffff;
@@ -399,12 +566,49 @@
   &:disabled {
     opacity: 0.85;
   }
+
+  // A light sweep that crosses the button once per hover.
+  &::after {
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 45%;
+    height: 100%;
+    content: '';
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(255, 255, 255, 0.22),
+      transparent
+    );
+    transform: skewX(-18deg);
+    transition: left 560ms $ease-out;
+  }
+
+  &:hover:not(:disabled)::after {
+    left: 130%;
+  }
 }
 
 .btn-signin--done {
   background: linear-gradient(180deg, #14cc92, $brand-green);
   box-shadow: 0 10px 24px rgba(16, 185, 129, 0.28);
   opacity: 1;
+  animation: confirm-glow 620ms $ease-out;
+
+  &::after {
+    display: none;
+  }
+}
+
+// One outward ring when the credentials are accepted.
+@keyframes confirm-glow {
+  from {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  to {
+    box-shadow: 0 10px 24px rgba(16, 185, 129, 0.28);
+  }
 }
 
 .btn-signin__spinner {

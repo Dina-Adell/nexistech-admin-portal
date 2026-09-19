@@ -83,6 +83,43 @@ input:-webkit-autofill:focus {
   color: #fff;
 }
 
+// -----------------------------------------------------------------------------
+// Ambient background glow: a very slow drift so the page feels alive without
+// pulling attention away from the form.
+// -----------------------------------------------------------------------------
+
+body::before {
+  position: fixed;
+  inset: -20% -20% auto -20%;
+  z-index: 0;
+  height: 72vh;
+  content: '';
+  pointer-events: none;
+  background: radial-gradient(
+    50% 60% at 50% 0%,
+    rgba(124, 58, 237, 0.16),
+    transparent 70%
+  );
+  animation: aurora-drift 18s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift {
+  from {
+    opacity: 0.75;
+    transform: translate3d(-3%, -2%, 0) scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(3%, 2%, 0) scale(1.08);
+  }
+}
+
+app-root {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
