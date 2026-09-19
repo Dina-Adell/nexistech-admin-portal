@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Text Animation Options</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Sora:wght@600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --violet: #7c3aed;
+      --violet-strong: #8b5cf6;
+      --green: #10b981;
+      --base: #121212;
+      --raised: #1a1a1a;
+      --hairline: rgba(255,255,255,0.08);
+      --text: #f4f4f5;
+      --text-2: #a1a1aa;
+      --muted: #71717a;
+      --ease: cubic-bezier(0.22,1,0.36,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--base);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 3rem 1.5rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Sora', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text-2);
+      font-weight: 500;
+      margin-bottom: 2.5rem;
+      letter-spacing: .02em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--raised);
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
+      padding: 2rem 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      text-align: center;
+    }
+
+    .badge {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--violet-strong);
+      background: rgba(139,92,246,.12);
+      border: 1px solid rgba(139,92,246,.25);
+      border-radius: 99px;
+      padding: .25rem .75rem;
+    }
+
+    .demo-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.3;
+      min-height: 3.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .demo-sub {
+      font-size: .85rem;
+      color: var(--text-2);
+      min-height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .replay-btn {
+      margin-top: .25rem;
+      padding: .45rem 1.1rem;
+      font-family: inherit;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-2);
+      background: transparent;
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: color 140ms, border-color 140ms, background 140ms;
+    }
+    .replay-btn:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.04);
+    }
+
+    /* =============================================
+       1. TYPEWRITER
+    ============================================= */
+    #tw-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border-right: 2px solid var(--violet-strong);
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+    }
+    #tw-title.typing {
+      animation: typewriter 1.6s steps(26,end) .3s forwards,
+                 blink-caret .7s step-end infinite;
+    }
+    @keyframes typewriter {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+    @keyframes blink-caret {
+      0%,100% { border-color: var(--violet-strong); }
+      50%     { border-color: transparent; }
+    }
+
+    /* =============================================
+       2. BLUR FADE
+    ============================================= */
+    #bf-title, #bf-sub {
+      opacity: 0;
+      filter: blur(12px);
+      transform: scale(.97);
+      transition: opacity 900ms var(--ease), filter 900ms var(--ease), transform 900ms var(--ease);
+    }
+    #bf-sub { transition-delay: 400ms; }
+    #bf-title.go, #bf-sub.go {
+      opacity: 1;
+      filter: blur(0);
+      transform: none;
+    }
+
+    /* =============================================
+       3. SLIDE FROM LEFT
+    ============================================= */
+    #sl-title, #sl-sub {
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+    }
+    #sl-sub { transition-delay: 300ms; }
+    #sl-title.go, #sl-sub.go {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* =============================================
+       4. GLITCH FLASH
+    ============================================= */
+    #gl-title {
+      position: relative;
+      opacity: 0;
+    }
+    #gl-title.go {
+      animation: glitch-in 800ms var(--ease) forwards;
+    }
+    @keyframes glitch-in {
+      0%   { opacity:0; clip-path: inset(40% 0 40% 0); transform: translateX(-4px); }
+      15%  { opacity:1; clip-path: inset(0% 0 60% 0);  transform: translateX(3px); color: #a78bfa; }
+      30%  { clip-path: inset(50% 0 0% 0);  transform: translateX(-2px); color: var(--text); }
+      45%  { clip-path: inset(20% 0 30% 0); transform: translateX(2px); }
+      60%  { clip-path: inset(0% 0 0% 0);   transform: translateX(-1px); }
+      75%  { transform: translateX(1px); }
+      100% { opacity:1; clip-path: inset(0% 0 0% 0); transform: none; }
+    }
+    #gl-sub {
+      opacity: 0;
+      transition: opacity 500ms ease 600ms;
+    }
+    #gl-sub.go { opacity: 1; }
+
+    /* =============================================
+       5. SCALE POP
+    ============================================= */
+    #sp-title, #sp-sub {
+      opacity: 0;
+      transform: scale(.75);
+      transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+    }
+    #sp-sub { transition-delay: 280ms; }
+    #sp-title.go, #sp-sub.go {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>اختاري طريقة ظهور الكلام اللي تعجبك 👇</h1>
+
+  <div class="grid">
+
+    <!-- 1. TYPEWRITER -->
+    <div class="card">
+      <span class="badge">Option 1</span>
+      <div class="demo-title">
+        <span id="tw-title">Welcome Back to NexisTech</span>
+      </div>
+      <div class="demo-sub" style="opacity:.7;font-size:.8rem;color:var(--muted)">الكلام بيتكتب حرف حرف</div>
+      <button class="replay-btn" onclick="replayTW()">↺ Replay</button>
+    </div>
+
+    <!-- 2. BLUR FADE -->
+    <div class="card">
+      <span class="badge">Option 2</span>
+      <div class="demo-title">
+        <span id="bf-title">Welcome Back to NexisTech</span>
+      </div>
+      <div class="demo-sub">
+        <span id="bf-sub">Sign in to manage your clusters.</span>
+      </div>
+      <button class="replay-btn" onclick="replayBF()">↺ Replay</button>
+    </div>
+
+    <!-- 3. SLIDE FROM LEFT -->
+    <div class="card">
+      <span class="badge">Option 3</span>
+      <div class="demo-title">
+        <span id="sl-title">Welcome Back to NexisTech</span>
+      </div>
+      <div class="demo-sub">
+        <span id="sl-sub">Sign in to manage your clusters.</span>
+      </div>
+      <button class="replay-btn" onclick="replaySL()">↺ Replay</button>
+    </div>
+
+    <!-- 4. GLITCH FLASH -->
+    <div class="card">
+      <span class="badge">Option 4</span>
+      <div class="demo-title">
+        <span id="gl-title">Welcome Back to NexisTech</span>
+      </div>
+      <div class="demo-sub">
+        <span id="gl-sub">Sign in to manage your clusters.</span>
+      </div>
+      <button class="replay-btn" onclick="replayGL()">↺ Replay</button>
+    </div>
+
+    <!-- 5. SCALE POP -->
+    <div class="card">
+      <span class="badge">Option 5</span>
+      <div class="demo-title">
+        <span id="sp-title">Welcome Back to NexisTech</span>
+      </div>
+      <div class="demo-sub">
+        <span id="sp-sub">Sign in to manage your clusters.</span>
+      </div>
+      <button class="replay-btn" onclick="replaySP()">↺ Replay</button>
+    </div>
+
+  </div>
+
+  <script>
+    /* helpers */
+    function resetClass(el) {
+      el.classList.remove('go','typing');
+      void el.offsetWidth; // force reflow
+    }
+
+    /* 1 - typewriter */
+    function replayTW() {
+      const el = document.getElementById('tw-title');
+      resetClass(el);
+      setTimeout(() => el.classList.add('typing'), 20);
+    }
+
+    /* 2 - blur fade */
+    function replayBF() {
+      ['bf-title','bf-sub'].forEach(id => resetClass(document.getElementById(id)));
+      setTimeout(() => {
+        document.getElementById('bf-title').classList.add('go');
+        document.getElementById('bf-sub').classList.add('go');
+      }, 20);
+    }
+
+    /* 3 - slide left */
+    function replaySL() {
+      ['sl-title','sl-sub'].forEach(id => resetClass(document.getElementById(id)));
+      setTimeout(() => {
+        document.getElementById('sl-title').classList.add('go');
+        document.getElementById('sl-sub').classList.add('go');
+      }, 20);
+    }
+
+    /* 4 - glitch */
+    function replayGL() {
+      ['gl-title','gl-sub'].forEach(id => resetClass(document.getElementById(id)));
+      setTimeout(() => {
+        document.getElementById('gl-title').classList.add('go');
+        document.getElementById('gl-sub').classList.add('go');
+      }, 20);
+    }
+
+    /* 5 - scale pop */
+    function replaySP() {
+      ['sp-title','sp-sub'].forEach(id => resetClass(document.getElementById(id)));
+      setTimeout(() => {
+        document.getElementById('sp-title').classList.add('go');
+        document.getElementById('sp-sub').classList.add('go');
+      }, 20);
+    }
+
+    /* auto-play all on load */
+    window.addEventListener('load', () => {
+      setTimeout(replayTW, 300);
+      setTimeout(replayBF, 300);
+      setTimeout(replaySL, 300);
+      setTimeout(replayGL, 300);
+      setTimeout(replaySP, 300);
+    });
+  </script>
+</body>
+</html>
