@@ -291,8 +291,7 @@
       }
 
       /* ============================================================
-         SLOW-MOTION WORD SPLIT — title & subtitle
-         Each word is wrapped in <span class="word"> by JS at runtime
+         TYPEWRITER — title & subtitle
       ============================================================ */
       .signin-card__title {
         margin: 1.35rem 0 .4rem;
@@ -300,34 +299,37 @@
         font-size: 1.4rem;
         font-weight: 600;
         letter-spacing: -.02em;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 2px solid var(--violet-strong);
+        width: 0;
+        animation:
+          tw-title 1.5s steps(26, end) 350ms forwards,
+          caret-blink .7s step-end 350ms 5;
       }
+      @keyframes tw-title {
+        from { width: 0; }
+        to   { width: 100%; }
+      }
+      @keyframes caret-blink {
+        0%,100% { border-color: var(--violet-strong); }
+        50%     { border-color: transparent; }
+      }
+
       .signin-card__subtitle {
         max-width: 30ch;
         margin: 0 auto;
         font-size: .89rem;
         color: var(--text-2);
+        overflow: hidden;
+        white-space: nowrap;
+        width: 0;
+        /* starts after title finishes (~1.85s total) */
+        animation: tw-sub 1.2s steps(42, end) 1900ms forwards;
       }
-
-      /* words start invisible; JS assigns --i for stagger */
-      .word {
-        display: inline-block;
-        opacity: 0;
-        transform: translateY(10px) scale(.96);
-        animation: word-rise 700ms var(--ease-soft) forwards;
-        animation-delay: calc(var(--i) * 75ms + 320ms);
-      }
-      @keyframes word-rise {
-        0%   { opacity: 0; transform: translateY(10px) scale(.96); filter: blur(3px); }
-        60%  { filter: blur(0); }
-        100% { opacity: 1; transform: none; filter: blur(0); }
-      }
-
-      /* subtitle words — slightly slower, start after title */
-      .subtitle-word {
-        display: inline-block;
-        opacity: 0;
-        transform: translateY(7px);
-        animation: word-rise 600ms var(--ease-soft) forwards;
+      @keyframes tw-sub {
+        from { width: 0; }
+        to   { width: 100%; }
       }
 
       /* ============================================================
@@ -733,28 +735,6 @@
         init();
         draw();
       })();
-
-      /* ============================================================
-         SLOW-MOTION WORD SPLIT
-         Wraps each word in a <span class="word"> with a CSS --i index
-         so every word fades+rises individually with a stagger.
-      ============================================================ */
-      function splitWords(el, baseDelay) {
-        const text = el.textContent.trim();
-        const words = text.split(/\s+/);
-        el.innerHTML = words
-          .map((w, i) =>
-            `<span class="word" style="--i:${i + baseDelay}">${w}</span>`
-          )
-          .join(' ');
-      }
-
-      // Title words start at index 0  (delay = 0 * 75ms + 320ms = 320ms …)
-      splitWords(document.getElementById('signin-heading'), 0);
-
-      // Subtitle words start at index 6 so they begin after the title
-      const subtitle = document.querySelector('.signin-card__subtitle');
-      splitWords(subtitle, 6);
 
       /* ============================================================
          FORM LOGIC
